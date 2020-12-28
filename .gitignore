@@ -1,0 +1,4 @@
+src/*.o
+src/*.so
+*.pyc
+__pycache__

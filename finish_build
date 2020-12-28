@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#Link the libtensorflow_framework.so file if not found
+python /tf_nearest_neighbor/fix_missing_tflib.py
+
+#TODO: Hack since the apt cmake version as the day of writing does not include FindPython
+pip uninstall -y cmake
+pip install cmake
+
+cd /tf_nearest_neighbor/src/build/
+
+rm -R ./*
+/anaconda/envs/tf_nndistance_env/lib/python3.7/site-packages/cmake/data/bin/cmake -DCMAKE_BUILD_TYPE=DEBUG ..
+
+make -j 8 all
+
+cd ../../
+
+#python setup.py install
+
