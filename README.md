@@ -2,7 +2,7 @@
 This repository implements two different custom KNN algorithms: A simple, yet memory efficient exhaustive search with quadratic runtime but linear memory. 
 Secondly, for multiple queries of the same point cloud, a custom KD-Tree operator in CUDA (GPU), or C++ (CPU). The KD-Tree is always generated using the CPU, but is automatically transferred to the GPU for Tensorflow operations there. The KD-Tree implementation has logarithmic runtime and will quickly
 
-The algorithms' dimensions are currently defined through template parameters and must be known at compile-time therefore. The present version compiles the library for the following dimensionalities: 1, 2, 3, 5, 10, 20, 50, 100.
+The algorithms' dimensions are currently defined through template parameters and must be known at compile-time therefore. The present version compiles the library for the dimensionalities 1, 2, 3.
 
 # Usage Examples
 
@@ -156,19 +156,20 @@ To run the benchmark on your computer, go to the folder scripts and execute `ipy
 
 # Acknowledgements
 
-If this works helps you in your research, please consider acknowledging the github repository, or citing our paper
+If this works helps you in your research, please consider acknowledging the github repository, or citing our [paper](https://arxiv.org/abs/2102.09962) from which the library originated.
 
-*TODO: Placeholder*
 ```
-@inproceedings{grandits_geasi_2020,
-	address = {Cham},
-	series = {Lecture {Notes} in {Computer} {Science}},
-	title = {{PIEMAP}: {Personalized} {Inverse} {Eikonal} {Model} from cardiac {Electro}-{Anatomical} {Maps}},
-	language = {en},
-	booktitle = {Statistical {Atlases} and {Computational} {Models} of the {Heart} ({STACOM} 2020)},
-	publisher = {Springer International Publishing},
-	author = {Grandits, Thomas and Pezzuto, Simone and Lubrecht, Jolijn and Pock, Thomas and Plank, Gernot and Krause, Rolf},
-	keywords = {Electrophysiology, Cardiac resynchronisation therapy, Computer model, Personalisation}
+@article{grandits_geasi_2021,
+	title = {{GEASI}: {Geodesic}-based {Earliest} {Activation} {Sites} {Identification} in cardiac models},
+	shorttitle = {{GEASI}},
+	url = {http://arxiv.org/abs/2102.09962},
+	urldate = {2021-02-22},
+	journal = {arXiv:2102.09962 [cs, math]},
+	author = {Grandits, Thomas and Effland, Alexander and Pock, Thomas and Krause, Rolf and Plank, Gernot and Pezzuto, Simone},
+	month = feb,
+	year = {2021},
+	note = {arXiv: 2102.09962},
+	keywords = {92B05, 35Q93, 65K10, 35F21, 35F20, Mathematics - Numerical Analysis, Mathematics - Optimization and Control}
 }
 ```
 
