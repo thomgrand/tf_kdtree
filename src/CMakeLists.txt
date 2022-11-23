@@ -11,13 +11,13 @@ option(BUILD_TF_OP "Enable building the tensorflow operator"
 # The version number.
 set (TF_KNN_VERSION_MAJOR 0)
 set (TF_KNN_VERSION_MINOR 1)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 include(CheckLanguage)
 check_language(CUDA)
 
 if(NOT DEFINED CMAKE_CUDA_STANDARD)
-    set(CMAKE_CUDA_STANDARD 11)
+    set(CMAKE_CUDA_STANDARD 14)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
 
@@ -58,7 +58,7 @@ set(INTERFACE_SOURCE_LIST
 include(ExternalProject)
 set(EIGEN_INSTALL_DIR "${PROJECT_SOURCE_DIR}/eigenlib")
 ExternalProject_Add( eigen
-  GIT_REPOSITORY  "https://gitlab.com/libeigen/eigen"
+  URL "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip"
   SOURCE_DIR "${EIGEN_INSTALL_DIR}"
   INSTALL_COMMAND ""
   BUILD_COMMAND ""
