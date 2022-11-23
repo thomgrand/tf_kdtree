@@ -52,6 +52,10 @@ import numpy as np
 import tensorflow as tf
 from tf_nearest_neighbor import nn_distance, buildKDTree, searchKDTree
 
+nr_refs = 1000 #Points in the KD-tree
+nr_query = 100 #Points to be queried from the tree
+d = 3 # Dimensions
+
 #Create some random point clouds
 points_ref = np.random.uniform(size=(nr_refs, d)).astype(np.float32) * 1e3
 points_query = np.random.uniform(size=(nr_query, d)).astype(np.float32) * 1e3
@@ -78,6 +82,11 @@ or even shorter in eager mode:
 import numpy as np
 import tensorflow as tf
 from tf_nearest_neighbor import nn_distance, buildKDTree, searchKDTree
+
+nr_refs = 1000 #Points in the KD-tree
+nr_query = 100 #Points to be queried from the tree
+d = 3 # Dimensions
+
 #Create some random point clouds
 points_ref = np.random.uniform(size=(nr_refs, d)).astype(np.float32) * 1e3
 points_query = np.random.uniform(size=(nr_query, d)).astype(np.float32) * 1e3
