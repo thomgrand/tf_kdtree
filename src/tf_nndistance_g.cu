@@ -93,7 +93,7 @@ __global__ void NmDistanceKernelDynamic(int n, const T* points_ref, int m, const
 	__shared__ T ref_buf[batch*point_dims];
 
 	//2D indices
-	const int blockidx = blockIdx.x + blockIdx.y*gridDim.x;
+	//const int blockidx = blockIdx.x + blockIdx.y*gridDim.x; //Not used
 	const int block_size = blockDim.x * blockDim.y; // * blockDim.z;
 	const int tidx = threadIdx.y * blockDim.x + threadIdx.x;
 	//print("")

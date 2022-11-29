@@ -149,7 +149,7 @@ template <typename T>
 __device__ inline void copyKernel(const T* src, const T* src_end, T* dest)
 {
 	//2D indices
-	const int blockidx = blockIdx.x + blockIdx.y*gridDim.x;
+	//const int blockidx = blockIdx.x + blockIdx.y*gridDim.x; //Not used
 	const int block_size = blockDim.x * blockDim.y; // * blockDim.z;
 	const int tidx = threadIdx.y * blockDim.x + threadIdx.x;
 
@@ -175,7 +175,7 @@ template <typename T>
 __device__ inline void fillKernel(T* src, T* src_end, T val)
 {
 	//2D indices
-	const int blockidx = blockIdx.x + blockIdx.y*gridDim.x;
+	//const int blockidx = blockIdx.x + blockIdx.y*gridDim.x; //Not used
 	const int block_size = blockDim.x * blockDim.y; // * blockDim.z;
 	const int tidx = threadIdx.y * blockDim.x + threadIdx.x;
 
@@ -267,7 +267,7 @@ template <typename T, uint32_t dims>
 __device__ inline void compDists(const Vec<T, dims>& point, const Vec<T, dims>* ref_leaf, const size_t nr_ref, T* dest)
 {
 	//2D indices
-	const int blockidx = blockIdx.x + blockIdx.y*gridDim.x;
+	//const int blockidx = blockIdx.x + blockIdx.y*gridDim.x; //Not used
 	const int block_size = blockDim.x * blockDim.y; // * blockDim.z;
 	const int tidx = threadIdx.y * blockDim.x + threadIdx.x;
 

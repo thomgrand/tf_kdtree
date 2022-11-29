@@ -170,15 +170,17 @@ If this works helps you in your research, please consider acknowledging the gith
 ```
 @article{grandits_geasi_2021,
 	title = {{GEASI}: {Geodesic}-based {Earliest} {Activation} {Sites} {Identification} in cardiac models},
+	volume = {37},
+	issn = {2040-7947},
 	shorttitle = {{GEASI}},
-	url = {http://arxiv.org/abs/2102.09962},
-	urldate = {2021-02-22},
-	journal = {arXiv:2102.09962 [cs, math]},
+	url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/cnm.3505},
+	doi = {10.1002/cnm.3505},
+	language = {en},
+	number = {8},
+	urldate = {2021-08-12},
+	journal = {International Journal for Numerical Methods in Biomedical Engineering},
 	author = {Grandits, Thomas and Effland, Alexander and Pock, Thomas and Krause, Rolf and Plank, Gernot and Pezzuto, Simone},
-	month = feb,
-	year = {2021},
-	note = {arXiv: 2102.09962},
-	keywords = {92B05, 35Q93, 65K10, 35F21, 35F20, Mathematics - Numerical Analysis, Mathematics - Optimization and Control}
+	year = {2021}
 }
 ```
 

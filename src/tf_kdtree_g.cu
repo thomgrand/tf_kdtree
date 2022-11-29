@@ -3,9 +3,6 @@
 #include "nndistance.hpp"
 #include "cutils.cuh"
 #include "tf_kdtree.hpp"
-#include <thrust/copy.h>
-#include <thrust/device_vector.h>
-#include <thrust/execution_policy.h>
 
 const int local_dist_buf_size = 256;
 
@@ -19,8 +16,8 @@ __device__ void compQuadrDistLeafPartitionBlockwise(const Vec<T, dims>& point, c
 {
 	//printf("Before dereferencing\n");
 	//2D indices
-	const int block_size = blockDim.x * blockDim.y; // * blockDim.z;
-	const int tidx = threadIdx.y * blockDim.x + threadIdx.x;
+	//const int block_size = blockDim.x * blockDim.y; // * blockDim.z; //Not used
+	//const int tidx = threadIdx.y * blockDim.x + threadIdx.x; //Not used
 
     /*printf("compQuadrDistLeafPartition: %x, ", partition_leaf.data);
     printf("%d, ", partition_leaf.nr_points);
@@ -82,7 +79,7 @@ PartitionInfoDevice<T, dims>* copyPartitionToGPU(const PartitionInfo<T, dims>& p
     const auto& partitions = partition_info.partitions;
     Partition<T>* partitions_d = copyArrayToDevice(partitions, partition_info.nr_partitions);
 
-    const auto& leaves = partition_info.leaves;
+    //const auto& leaves = partition_info.leaves; //Not used
     PartitionLeaf<T, dims>* leaves_d = copyArrayToDevice(leaves_copy.data(), partition_info.nr_leaves);
 
 
@@ -283,14 +280,14 @@ __global__ void KDTreeKernel(PartitionInfoDevice<T, dims>* partition_info,
 {
 	assert(nr_nns_searches <= partition_info->nr_points);
 
-	const auto nr_partitions = partition_info->nr_partitions;
-	const auto nr_leaves = partition_info->nr_leaves;
+	//const auto nr_partitions = partition_info->nr_partitions; //Not used
+	//const auto nr_leaves = partition_info->nr_leaves; //Not used
 	//printf("%d, %d\n", nr_partitions, nr_leaves);
 
 	//2D indices
 	const auto grid_size = gridDim.x * gridDim.y;
 	const auto blockidx = blockIdx.x + blockIdx.y*gridDim.x;
-	const auto block_size = blockDim.x * blockDim.y; // * blockDim.z;
+	//const auto block_size = blockDim.x * blockDim.y; // * blockDim.z; //Not used
 	const auto tidx = threadIdx.y * blockDim.x + threadIdx.x;
 	//const auto global_start_idx = tidx + blockidx * grid_size;
 
@@ -300,14 +297,15 @@ __global__ void KDTreeKernel(PartitionInfoDevice<T, dims>* partition_info,
 	//__shared__ tree_ind_t leaf_inds[nr_buffered_leaf_inds];
 	__shared__ point_i_t buffered_knn[2*max_nr_nns_searches];
 	__shared__ T buffered_dists[2*max_nr_nns_searches];
-	__shared__ TreeTraversal<T, dims> tree[1];
+	extern __shared__ char shared_arr[];
 	__shared__ NodeTag tags[max_nr_nodes/4];
 	PingPongBuffer<T> best_dist_pp[1];
 	PingPongBuffer<point_i_t> best_knn_pp;
 	__shared__ T local_dist_buf[local_dist_buf_size];
-	__shared__ Vec<T, dims> point_proj[1];
 	__shared__ T worst_dist_[1];
 	__shared__ bool off_leaf_necessary[1]; //TODO: Watch out for alignment
+	TreeTraversal<T, dims>* tree = reinterpret_cast<TreeTraversal<T, dims>*>(shared_arr);
+	Vec<T, dims>* point_proj = reinterpret_cast<Vec<T, dims>*>(shared_arr + sizeof(TreeTraversal<T, dims>));
 	
 	//if(tidx == 0)
 	//	local_dist_buf_pointer[0] = new T[local_dist_buf_size]; //TODO: Dynamic
@@ -438,7 +436,7 @@ void KDTreeKNNGPUSearch(PartitionInfoDevice<T, dims>* partition_info,
 	#endif*/
 
 	const auto points_query_eig = reinterpret_cast<const Vec<T, dims>*>(points_query);
-	KDTreeKernel<T, T_calc, dims><<<grid_dims, block_dims>>>(partition_info, nr_query, points_query_eig, dist, idx, nr_nns_searches);
+	KDTreeKernel<T, T_calc, dims><<<grid_dims, block_dims, sizeof(TreeTraversal<T, dims>)+sizeof(Vec<T, dims>)>>>(partition_info, nr_query, points_query_eig, dist, idx, nr_nns_searches);
 
 	#ifndef NDEBUG
 	gpuErrchk( cudaPeekAtLastError() );

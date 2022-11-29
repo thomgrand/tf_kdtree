@@ -265,13 +265,13 @@ public:
     }
 
     template <typename T_ind>
-    CUDA_HOSTDEV static T_ind compParentInd(const T_ind lin_ind) { return (lin_ind - 1)/2; }
+    CUDA_HOSTDEV static inline T_ind compParentInd(const T_ind lin_ind) { return (lin_ind - 1)/2; }
 
     template <typename T_ind>
-    CUDA_HOSTDEV static T_ind compLeftChildInd(const T_ind lin_ind) { return lin_ind * 2 + 1; }
+    CUDA_HOSTDEV static inline T_ind compLeftChildInd(const T_ind lin_ind) { return lin_ind * 2 + 1; }
 
     template <typename T_ind>
-    CUDA_HOSTDEV static T_ind compRightChildInd(const T_ind lin_ind) { return lin_ind * 2 + 2; }
+    CUDA_HOSTDEV static inline T_ind compRightChildInd(const T_ind lin_ind) { return lin_ind * 2 + 2; }
 
     template <typename T_ind>
     CUDA_HOSTDEV static T_ind compLevel(T_ind lin_ind)
@@ -287,16 +287,16 @@ public:
     }
 
     template <typename T_ind, typename T_ind2>
-    CUDA_HOSTDEV static T_ind compLeftLeafInd(const T_ind lin_ind, const T_ind2 nr_partitions) { return compLeftChildInd(lin_ind) - nr_partitions; }
+    CUDA_HOSTDEV static inline T_ind compLeftLeafInd(const T_ind lin_ind, const T_ind2 nr_partitions) { return compLeftChildInd(lin_ind) - nr_partitions; }
 
     template <typename T_ind, typename T_ind2>
-    CUDA_HOSTDEV static T_ind compRightLeafInd(const T_ind lin_ind, const T_ind2 nr_partitions) { return compLeftLeafInd(lin_ind, nr_partitions) + 1; }
+    CUDA_HOSTDEV static inline T_ind compRightLeafInd(const T_ind lin_ind, const T_ind2 nr_partitions) { return compLeftLeafInd(lin_ind, nr_partitions) + 1; }
 
     template <typename T_ind>
-    CUDA_HOSTDEV static T_ind compLeftLeafInd(const T_ind lin_ind) { return compLeftLeafInd(lin_ind, compTotalNrNodes(compLevel(lin_ind))); }
+    CUDA_HOSTDEV static inline T_ind compLeftLeafInd(const T_ind lin_ind) { return compLeftLeafInd(lin_ind, compTotalNrNodes(compLevel(lin_ind))); }
 
     template <typename T_ind>
-    CUDA_HOSTDEV static T_ind compRightLeafInd(const T_ind lin_ind) { return compLeftLeafInd(lin_ind) + 1; }
+    CUDA_HOSTDEV static inline T_ind compRightLeafInd(const T_ind lin_ind) { return compLeftLeafInd(lin_ind) + 1; }
 
     CUDA_HOSTDEV inline tree_ind_t compLeftLeafInd(){ return compLeftLeafInd(current_lin_ind); }
     CUDA_HOSTDEV inline tree_ind_t compRighLeafInd(){ return compRightLeafInd(current_lin_ind); }
@@ -337,7 +337,7 @@ public:
         const NodeTag old_byte = visited_info[byte_idx];
         const NodeTag modified_mask = moveTagToBinaryPosition(NodeTag::left_right_visited); //getBinaryIndMask();
         const NodeTag unmodified_mask = static_cast<NodeTag>(~modified_mask);
-        const unsigned char bit_idx  = current_lin_ind % 4;
+        //const unsigned char bit_idx  = current_lin_ind % 4; //Not used
         visited_info[byte_idx] = static_cast<NodeTag>((unmodified_mask & old_byte) | (moveTagToBinaryPosition(new_bits) & modified_mask));
     }
 

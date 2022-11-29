@@ -21,9 +21,6 @@ if(NOT DEFINED CMAKE_CUDA_STANDARD)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
 
-set(CUDA_NVCC_FLAGS_DEBUG "-g -G")
-set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} --expt-relaxed-constexpr")
-
 #Search for python
 find_package(Python 3.1 COMPONENTS Interpreter Development REQUIRED)
 
@@ -114,8 +111,9 @@ target_include_directories(tf_nndistance PRIVATE ${EIGEN_INSTALL_DIR} ${TF_INCLU
 #-fPIC
 #set_property(tf_nndistance PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-target_compile_definitions(tf_nndistance PUBLIC "$<$<CONFIG:RELEASE>:NDEBUG>")
-#target_compile_definitions(test_kdtree PUBLIC "$<$<CONFIG:RELEASE>:NDEBUG>")
+target_compile_definitions(tf_nndistance PUBLIC $<$<CONFIG:RELEASE>:NDEBUG>)
+target_compile_options(test_kdtree PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>)
+target_compile_options(tf_nndistance PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>)
 
 ##################################
 # Post-build commands
